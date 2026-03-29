@@ -1,130 +1,260 @@
-# Home-Lab-SIEM---Microsoft-Sentinel
+# Home Lab SIEM – Microsoft Sentinel
 
+This project demonstrates the setup of a home lab SIEM (Security Information and Event Management) using Microsoft Sentinel on Azure. The goal is to simulate a real-world environment, generate security events, and analyze them using centralized logging and detection techniques.
 
-## Part 1. Setup Azure Subscription
+---
 
-Create Free Azure Subscription: https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account
+## 📌 Overview
 
-If Azure doesn’t let you create a free account, you can either
-Create a paid subscription and be mindful of shutting down/deleting your resources when you are done, or
-Sign up for the Cyber Range, where you pay a flat fee and get access to Azure, Tenable, Defender for Endpoint, Courses, Labs, Weekly lives, optional Cyber Internship: https://skool.com/cyber-range 
+The lab simulates a vulnerable environment (honeypot) by exposing a Windows virtual machine to the internet. Security logs are collected and forwarded to a centralized Log Analytics Workspace, where they are analyzed using Microsoft Sentinel and KQL queries.
 
-After your subscription is created, you can login at:
+---
+
+## 🏗️ Architecture
+
+![Architecture](images/overview.png)
+
+---
+
+## ⚙️ Setup Steps
+
+### 1. Azure Subscription
+
+Create an Azure account and access the portal:
+
 https://portal.azure.com
 
+---
 
-## Part 2. Create the Honey Pot (Azure Virtual Machine)
+### 2. Honeypot Virtual Machine
 
-Go to: https://portal.azure.com and search for virtual machines
+- Create a Resource Group: `RG-SOC-Lab` 
+- Create a Virtual Network: `Vnet-soc-lab` 
+  - IP range: `10.0.0.0/24`
+![Virtual Network IP range](images/vn-ip_range.png)
 
-Create a new Windows 10 virtual machine (choose an appropriate size. If you are in the Cyber Range, the size will be limited. You notice the monthly cost of leaving the VM on 24/7. Be mindful of shutting this off when you are done, or just join the cyber range and we handle the back end expense). Remember the username and password
+- Deploy a Windows 10 Virtual Machine
+  - Username: `labuser`
+  - Password: `Labuserpassword123`
 
-Go to the Network Security Group for your virtual machine and create a rule that allows all traffic inbound
-
-Log into your virtual machine and turn off the windows firewall (start -> wf.msc -> properties -> all off)
-
-
-## Part 3. Logging into the VM and inspecting logs
-
-Fail 3 logins as “employee” (or some other username)
-
-Login to your virtual machine
-
-Open up Event Viewer and inspect the security logs
-
-See the 3 failed logins as “employee”, event ID 4625
-
-Next, we are going to create a central log repository called a LAW
+![VM Creation](images/vm-creation.png)
+![VM Creation](images/vn-creation.png)
 
 
+- Configure the Network Security Group:
 
-## Part 4. Log Forwarding and KQL
+![NSG Rules](images/nsg-rules.png)
 
-Create Log Analytics Workspace
+- Disable Windows Firewall:
 
-Create a Sentinel Instance and connect it to Log Analytics
-
-(observe architecture)
-
-Configure the “Windows Security Events via AMA” connector
-
-Create the DCR within sentinel, watch for extension creation
-
-Query for logs within the LAW
+![Firewall Disabled](images/firewall-disabled.png)
 
 
-We can now query the Log analytics workspace as well as the SIEM, sentinel directly, which we will do soon
+- Overview of all components (VM, Public IP, NSG, Network Interface):
 
-Note: Querying logs in here is a really important skill that you MUST have if you want to work in security operations. Depending on where you work, you need to know SQL, KQL, or SPL, but these are all basically the same thing. If you know one, you can easily learn the others. Microsoft and Sentinel uses KQL, which you can learn in the Cyber Range https://skool.com/cyber-range, or from here https://kc7cyber.com/ (free)
-
-Tip: The Cyber Range is basically a full production environment with hundreds of users and Virtual Machines in it, which are all producing a ton of logs. It’s a really good place to practice just sifting through logs and seeing what you can see.
-
-Observe some of your VM logs:
-
-SecurityEvent
-| where EventId == 4625
-
-(observe architecture)
+![VM Overview](images/vm-overview.png)
 
 
+- Also try to ping the public IP address to verify accessibility:
+
+![Ping Test](images/ping-test.png)
+
+
+
+---
+
+### 3. Generating Security Events
+
+- Perform failed login attempts via RDP with username “employeed”
+
+- Check logs in VM:
+  - Event Viewer → Windows Logs → Security
+  - Event ID: `4625` (Failed logon)
+
+- Filtered view showing failed login attempts:
+
+![Filtered 4625 Events](images/logs-filter-4625.png)
+
+- Detailed view of a single failed login event:
+
+![Expanded Event Details](images/log-expanded.png)
+
+---
+
+### 4. Log Collection & Sentinel Integration
+
+- Create a **Log Analytics Workspace (LAW)**
+
+![Log Analytics Workspace](images/law.png)
+
+- Deploy **Microsoft Sentinel** 
+
+![Sentinel Setup](images/sentinel.png)
+
+
+- Architecture overview (before VM connection to LAW):
+
+![Architecture Before Connection](images/architecture-before.png)
+
+- At this stage, the VM is not yet connected to the Log Analytics Workspace
+
+---
+
+- In the Virtual Machine:
+  - Go to **Extensions and Applications** (no extensions installed yet)
+
+![VM Extensions Empty](images/vm-extensions-empty.png)
+
+---
+
+- In Microsoft Sentinel:
+  - Go to **Content Management**
+  - Install **Windows Security Events**
+
+![Content Hub](images/content-hub.png)
+
+---
+
+- Configure connector:
+  - *Windows Security Events via AMA* 
+
+![Connector](images/connector.png)
+
+- Create a **Data Collection Rule (DCR)** 
+
+![DCR](images/dcr.png)
+
+
+---
+
+- After configuration, verify in the VM that the extension was installed:
+
+![VM Extension Installed](images/vm-extension-installed.png)
+
+---
+
+- We can now query the Log Analytics Workspace using KQL
+  - Start by querying all Security Events:
+
+![No Logs](images/no-logs.png)
+
+- At this stage, no logs are present yet.
+
+--- 
+
+- Generate a failed login attempt via RDP (as performed in the previous step)
+
+- Re-run the query — the log should now appear:
+
+![No Logs](images/failed-login-log.png)
+
+
+---
 
 ## Part 5. Log Enrichment and Finding Location Data
 
-Observe the SecurityEvent logs in the Log Analytics Workspace; there is no location data, only IP address, which we can use to derive the location data.
+- Observe the `SecurityEvent` logs in the Log Analytics Workspace
+  - By default, logs only contain the source IP address (no geographic information)
 
-We are going to import a spreadsheet (as a “Sentinel Watchlist”) which contains geographic information for each block of IP addresses.
+---
 
-Download: geoip-summarized.csv https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/misc/geoip-summarized.csv 
+- To enrich the logs, import an open-source GeoIP dataset:
+  - File: `components/geoip-summarized.csv`
+  - This dataset maps IP ranges to geographic locations
 
-Within Sentinel, create the watchlist:
+---
 
-Name/Alias: geoip
-Source type: Local File
-Number of lines before row: 0
-Search Key: network
+- In Microsoft Sentinel:
+  - Go to **Configuration → Watchlist**
+  - Create a new watchlist with the following settings:
+    - **Name/Alias:** `geoip`
+    - **Source type:** Local File
+    - **Number of lines before row:** 0
+    - **Search Key:** `network`
 
-Allow the watchlist to fully import, there should be a total of roughly 54,000 rows.
+![Watchlist Configuration](images/watchlist-config.png)
 
-In real life, this location data would come from a live source or it would be updated automatically on the back end by your service provider.
+---
 
-(observe architecture)
+- After running the query, logs now include geographic information:
 
-Observe the logs now have geographic information, so you can see where the attacks are coming from
-
-let GeoIPDB_FULL = _GetWatchlist("geoip");
-let WindowsEvents = SecurityEvent
-    | where IpAddress == <attacker IP address>
-    | where EventID == 4625
-    | order by TimeGenerated desc
-    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-WindowsEvents
+![Geo IP Logs](images/geo-ip-logs.png)
 
 
-(observe architecture)
-
-
-
+- This allows to:
+  - Identify the origin country of attacks
+  - Visualize attacker distribution
+  - Correlate suspicious activity geographically
+  
+  
+  
+  
 ## Part 6. Attack Map Creation
 
-Within Sentine, create a new Workbook
+- In Microsoft Sentinel:
+  - Create a new **Workbook**
 
-Delete the prepopulated elements and add a “Query” element
+- Add a data source and visualization:
 
-Go to the advanced editor tab, and paste the JSON
+![Add Visualization](images/add-visualization.png)
 
-Workbook (Attack map):
-map.json
+---
 
-Observe the query
-Observe the map settings
-Observe the map
+- Go to the **Advanced Editor** tab 
+  - Paste the JSON configuration file (`map.json`)
+  - Click **Apply** and **Done Editing**
 
-Finished!
+![Advanced Editor](images/advanced-editor.png)
 
-If you liked this lab, join the Cyber Range: https://skool.com/cyber-range 
-Access to an actual work environment with licensed enterprise security tools
-Weekly live calls with me
-Internships
-Community
-Threat hunts with cash prizes
+---
 
+- Save the workbook as:
+
+`Windows VM Attack Map`
+
+---
+
+- This map provides:
+  - A visual overview of attack origins 
+  - Geographic correlation of failed login attempts
+  - Improved situational awareness for security monitoring
+  
+  
+  
+  
+## Part 7. Observing Real Attack Activity
+
+- After leaving the virtual machine exposed to the internet for some time (~1–2 hours), external login attempts were observed
+
+---
+
+- SecurityEvent logs showing multiple failed login attempts:
+
+  - One attempt corresponds to a previous manual test
+  - Two additional attempts originate from an external public IP: `194.165.16.164`
+  - This IP is flagged as malicious on threat intelligence platforms (e.g., AbuseIPDB)
+
+![Attack Logs](images/attack-logs.png)
+
+---
+
+- Attack Map visualization:
+
+  - Two attack attempts originating from Austria (malicious IP)  
+  - One attempt from Portugal (local test activity)
+
+![Attack Map Results](images/attack-map-results.png)
+
+---
+
+- Key observations:
+  - The exposed VM attracted real-world unauthorized access attempts 
+  - Threat intelligence enrichment allowed identification of malicious sources 
+  - Geographic visualization provided clear insight into attack origins
+
+---
+
+- This demonstrates:
+  - Real-time threat detection in a cloud environment 
+  - Effective log collection and enrichment  
+  - Practical use of SIEM for security monitoring and analysis  
