@@ -18,7 +18,7 @@ The lab simulates a vulnerable environment (honeypot) by exposing a Windows virt
 
 ## ⚙️ Setup Steps
 
-### 1. Azure Subscription
+## Part 1. Azure Subscription
 
 Create an Azure account and access the portal:
 
@@ -26,7 +26,7 @@ https://portal.azure.com
 
 ---
 
-### 2. Infrastructure Deployment (Azure Resources)
+## Part 2. Infrastructure Deployment (Azure Resources)
 
 - Create a Resource Group: `RG-SOC-Lab` 
 ---
@@ -74,7 +74,7 @@ https://portal.azure.com
 
 ---
 
-### 3. Generating Security Events
+## Part 3. Generating Security Events
 
 - Perform failed login attempts via RDP with username “employeed”
 
@@ -100,7 +100,7 @@ https://portal.azure.com
 
 ---
 
-### 4. Log Collection & Sentinel Integration
+## Part 4. Log Collection & Sentinel Integration
 
 - Create a **Log Analytics Workspace (LAW)**
 
@@ -243,9 +243,7 @@ https://portal.azure.com
   
 ## Part 7. Observing Real Attack Activity
 
-- After leaving the virtual machine exposed to the internet for some time (~1–2 hours), external login attempts were observed
-
----
+- After leaving the virtual machine exposed to the internet for some time (~1–2 hours), external login attempts were observed.
 
 - SecurityEvent logs showing multiple failed login attempts:
 
@@ -286,7 +284,7 @@ https://portal.azure.com
 - The attack map was refined to improve visualization:
 
   - Local activity (Portugal / internal testing) is highlighted in green 
-  - A single failed login attempt is displayed in yellow 
+  - A single failed login attempt are displayed in yellow
   - Multiple failed login attempts from the same source are displayed in red
 
 - This color logic provides a clearer representation of attack intensity and distinguishes between benign, low, and high-risk activity.
