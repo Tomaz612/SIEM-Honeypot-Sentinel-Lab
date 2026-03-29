@@ -20,7 +20,7 @@ The lab simulates a vulnerable environment (honeypot) by exposing a Windows virt
 
 ## Part 1. Azure Subscription
 
-Create an Azure account and access the portal:
+### Create an Azure account and access the portal:
 
 https://portal.azure.com
 
@@ -28,7 +28,7 @@ https://portal.azure.com
 
 ## Part 2. Infrastructure Deployment (Azure Resources)
 
-- Create a Resource Group: `RG-SOC-Lab` 
+### Create a Resource Group: `RG-SOC-Lab` 
 ---
 
 - Create a Virtual Network: `Vnet-soc-lab` 
@@ -37,9 +37,8 @@ https://portal.azure.com
   ![Virtual Network IP range](images/vn-ip_range.png)
   ![VN Creation](images/vn-creation.png)
 
----
 
-- Deploy a Windows 10 Virtual Machine (Honeypot) 
+### Deploy a Windows 10 Virtual Machine (Honeypot) 
 
 ![VM Creation](images/vm-creation.png)
 
