@@ -318,7 +318,6 @@ https://portal.azure.com
 
 - After approximately 24 hours of exposure, additional attack attempts were observed, confirming continuous unsolicited access attempts from multiple geographic locations.
 
-- The final attack map shows a broader distribution of attack sources, indicating persistent scanning and brute-force activity targeting the exposed VM.
 
 ![Final Attack Map](images/attack-map-updated2.png)
 
