@@ -40,8 +40,6 @@ https://portal.azure.com
 ---
 
 - Deploy a Windows 10 Virtual Machine (Honeypot) 
-  - Username: `labuser`
-  - Password: `Labuserpassword123`
 
 ![VM Creation](images/vm-creation.png)
 
