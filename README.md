@@ -300,9 +300,8 @@ https://portal.azure.com
   
 ---
 
-### 📊 Additional Attack Activity
-  - Additional attack activity was observed over time, including failed login attempts originating from the United States and Taiwan.
-  - New color mapping was applied to the visualization:
+### 🎨 Improved Attack Map Visualization
+  - The attack map visualization was enhanced with an improved color scheme to better represent attack intensity:
     - Local activity (Portugal / internal testing) is highlighted in green 
     - A single failed login attempt is displayed in yellow
     - Multiple failed login attempts from the same source are displayed in red
@@ -318,6 +317,7 @@ https://portal.azure.com
 
 - After approximately 24 hours of exposure, additional attack attempts were observed, confirming continuous unsolicited access attempts from multiple geographic locations.
 
+- The final attack map shows a broader distribution of attack sources, indicating persistent scanning and brute-force activity targeting the exposed VM.
 
 ![Final Attack Map](images/attack-map-updated2.png)
 
