@@ -310,3 +310,23 @@ https://portal.azure.com
   - This color logic improves the visibility of attack intensity and helps distinguish between benign, low, and high-risk activity.
 
 ![Updated Attack Map](images/attack-map-updated.png)
+
+
+---
+
+### ⏱️ Attack Activity After 24 Hours
+
+- After approximately 24 hours of exposure, additional attack attempts were observed, confirming continuous unsolicited access attempts from multiple geographic locations.
+
+- The final attack map shows a broader distribution of attack sources, indicating persistent scanning and brute-force activity targeting the exposed VM.
+
+![Final Attack Map](images/attack-map-updated2.png)
+
+---
+
+- Corresponding `4625` (Failed Logon) events in the Log Analytics Workspace:
+
+  - Multiple external IP addresses attempting authentication
+  - Diverse geographic origins of attack traffic.
+
+![LAW Logs 4625](images/attack-logs2.png)
