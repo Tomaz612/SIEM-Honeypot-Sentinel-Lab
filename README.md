@@ -26,39 +26,51 @@ https://portal.azure.com
 
 ---
 
-### 2. Honeypot Virtual Machine
+### 2. Infrastructure Deployment (Azure Resources)
 
 - Create a Resource Group: `RG-SOC-Lab` 
+---
+
 - Create a Virtual Network: `Vnet-soc-lab` 
   - IP range: `10.0.0.0/24`
 ![Virtual Network IP range](images/vn-ip_range.png)
+![VN Creation](images/vn-creation.png)
+
+---
 
 - Deploy a Windows 10 Virtual Machine
   - Username: `labuser`
   - Password: `Labuserpassword123`
 
 ![VM Creation](images/vm-creation.png)
-![VM Creation](images/vn-creation.png)
 
+
+---
 
 - Configure the Network Security Group:
+  - Create a rule that allows all traffic inbound
 
 ![NSG Rules](images/nsg-rules.png)
 
+---
+
 - Disable Windows Firewall:
+ - Turn off Domain Profile
+ - Turn off Private Profile
+ - Turn off Public Profile
 
 ![Firewall Disabled](images/firewall-disabled.png)
 
+---
 
 - Overview of all components (VM, Public IP, NSG, Network Interface):
 
 ![VM Overview](images/vm-overview.png)
 
-
+---
 - Also try to ping the public IP address to verify accessibility:
 
 ![Ping Test](images/ping-test.png)
-
 
 
 ---
@@ -67,13 +79,21 @@ https://portal.azure.com
 
 - Perform failed login attempts via RDP with username “employeed”
 
+![RDP-failed](images/rdp-failed.png)
+![RDP-failed](images/rdp-failed-pass.png)
+
 - Check logs in VM:
   - Event Viewer → Windows Logs → Security
   - Event ID: `4625` (Failed logon)
 
+--- 
+
 - Filtered view showing failed login attempts:
 
 ![Filtered 4625 Events](images/logs-filter-4625.png)
+
+
+---
 
 - Detailed view of a single failed login event:
 
@@ -87,26 +107,29 @@ https://portal.azure.com
 
 ![Log Analytics Workspace](images/law.png)
 
+
+---
+
+
 - Deploy **Microsoft Sentinel** 
 
 ![Sentinel Setup](images/sentinel.png)
 
-
-- Architecture overview (before VM connection to LAW):
-
-![Architecture Before Connection](images/architecture-before.png)
-
-- At this stage, the VM is not yet connected to the Log Analytics Workspace
-
 ---
 
+- Architecture overview (before VM connection to LAW):
+  - At this stage, the VM is not yet connected to the Log Analytics Workspace
+  
+![Architecture Before Connection](images/architecture-before.png)
+
+
+---
 - In the Virtual Machine:
   - Go to **Extensions and Applications** (no extensions installed yet)
 
 ![VM Extensions Empty](images/vm-extensions-empty.png)
 
 ---
-
 - In Microsoft Sentinel:
   - Go to **Content Management**
   - Install **Windows Security Events**
@@ -114,16 +137,15 @@ https://portal.azure.com
 ![Content Hub](images/content-hub.png)
 
 ---
-
 - Configure connector:
   - *Windows Security Events via AMA* 
 
 ![Connector](images/connector.png)
 
+---
 - Create a **Data Collection Rule (DCR)** 
 
 ![DCR](images/dcr.png)
-
 
 ---
 
@@ -135,12 +157,11 @@ https://portal.azure.com
 
 - We can now query the Log Analytics Workspace using KQL
   - Start by querying all Security Events:
+  - At this stage, no logs are present yet
 
 ![No Logs](images/no-logs.png)
 
-- At this stage, no logs are present yet.
-
---- 
+---
 
 - Generate a failed login attempt via RDP (as performed in the previous step)
 
@@ -156,14 +177,12 @@ https://portal.azure.com
 - Observe the `SecurityEvent` logs in the Log Analytics Workspace
   - By default, logs only contain the source IP address (no geographic information)
 
----
 
 - To enrich the logs, import an open-source GeoIP dataset:
   - File: `components/geoip-summarized.csv`
   - This dataset maps IP ranges to geographic locations
 
 ---
-
 - In Microsoft Sentinel:
   - Go to **Configuration → Watchlist**
   - Create a new watchlist with the following settings:
@@ -173,6 +192,7 @@ https://portal.azure.com
     - **Search Key:** `network`
 
 ![Watchlist Configuration](images/watchlist-config.png)
+
 
 ---
 
@@ -187,7 +207,7 @@ https://portal.azure.com
   - Correlate suspicious activity geographically
   
   
-  
+---
   
 ## Part 6. Attack Map Creation
 
@@ -201,7 +221,7 @@ https://portal.azure.com
 ---
 
 - Go to the **Advanced Editor** tab 
-  - Paste the JSON configuration file (`map.json`)
+  - Paste the JSON configuration file (`components/map.json`)
   - Click **Apply** and **Done Editing**
 
 ![Advanced Editor](images/advanced-editor.png)
@@ -219,7 +239,7 @@ https://portal.azure.com
   - Geographic correlation of failed login attempts
   - Improved situational awareness for security monitoring
   
-  
+---
   
   
 ## Part 7. Observing Real Attack Activity
