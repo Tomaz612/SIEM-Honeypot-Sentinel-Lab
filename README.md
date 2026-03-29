@@ -54,7 +54,7 @@ https://portal.azure.com
 
 ---
 
-- Disable Windows Firewall:
+- In Windows 10 VM, Disable Windows Firewall:
   - Turn off Domain Profile
   - Turn off Private Profile
   - Turn off Public Profile
