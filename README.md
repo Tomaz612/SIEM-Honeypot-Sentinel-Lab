@@ -33,14 +33,13 @@ https://portal.azure.com
 
 - Create a Virtual Network: `Vnet-soc-lab` 
   - IP range: `10.0.0.0/24`
-![Virtual Network IP range](images/vn-ip_range.png)
-![VN Creation](images/vn-creation.png)
+  
+  ![Virtual Network IP range](images/vn-ip_range.png)
+  ![VN Creation](images/vn-creation.png)
 
 ---
 
-- Deploy a Windows 10 Virtual Machine
-  - Username: `labuser`
-  - Password: `Labuserpassword123`
+- Deploy a Windows 10 Virtual Machine (Honeypot) 
 
 ![VM Creation](images/vm-creation.png)
 
@@ -54,7 +53,7 @@ https://portal.azure.com
 
 ---
 
-- Disable Windows Firewall:
+- In Windows 10 VM, Disable Windows Firewall:
   - Turn off Domain Profile
   - Turn off Private Profile
   - Turn off Public Profile
