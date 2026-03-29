@@ -20,7 +20,7 @@ The lab simulates a vulnerable environment (honeypot) by exposing a Windows virt
 
 ## Part 1. Azure Subscription
 
-### Create an Azure account and access the portal:
+### 1️⃣ Create an Azure account and access the portal:
 
 https://portal.azure.com
 
@@ -72,7 +72,9 @@ https://portal.azure.com
 
 ## Part 3. Generating Security Events
 
-- Perform failed login attempts via RDP with username “employeed”
+### 1️⃣ Perform failed login attempts
+
+- Attempt to access VM via RDP with username (ex. employeed) and random password to purposely perform a failed login
 
 ![RDP-failed](images/rdp-failed.png)
 ![RDP-failed](images/rdp-failed-pass.png)
@@ -98,22 +100,21 @@ https://portal.azure.com
 
 ## Part 4. Log Collection & Sentinel Integration
 
-- Create a **Log Analytics Workspace (LAW)**
+### 1️⃣ Create a **Log Analytics Workspace (LAW)**
 
 ![Log Analytics Workspace](images/law.png)
 
 
----
 
-
-- Deploy **Microsoft Sentinel** 
+### 2️⃣ Deploy **Microsoft Sentinel** 
 
 ![Sentinel Setup](images/sentinel.png)
 
 ---
 
-- Architecture overview (before VM connection to LAW):
+### Architecture overview (before VM connection to LAW):
   - At this stage, the VM is not yet connected to the Log Analytics Workspace
+  
   
 ![Architecture Before Connection](images/architecture-before.png)
 
@@ -125,6 +126,8 @@ https://portal.azure.com
 ![VM Extensions Empty](images/vm-extensions-empty.png)
 
 ---
+
+### 3️⃣ Install Windows Security Events
 - In Microsoft Sentinel:
   - Go to **Content Management**
   - Install **Windows Security Events**
@@ -132,13 +135,14 @@ https://portal.azure.com
 ![Content Hub](images/content-hub.png)
 
 ---
-- Configure connector:
-  - *Windows Security Events via AMA* 
+### 4️⃣ Configure connector:
+  - Windows Security Events via AMA
+    - Open connector page
 
 ![Connector](images/connector.png)
 
 ---
-- Create a **Data Collection Rule (DCR)** 
+### 5️⃣ Create a **Data Collection Rule (DCR)** 
 
 ![DCR](images/dcr.png)
 
