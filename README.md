@@ -74,12 +74,12 @@ https://portal.azure.com
 
 ### 1️⃣ Perform failed login attempts
 
-- Attempt to access VM via RDP with username (ex. employeed) and random password to purposely perform a failed login
+- Simulated unauthorized access attempts via RDP using a valid username and incorrect password to generate failed login events.
 
 ![RDP-failed](images/rdp-failed.png)
 ![RDP-failed](images/rdp-failed-pass.png)
 
-- Check logs in VM:
+- Verified generated events on the virtual machine:
   - Event Viewer → Windows Logs → Security
   - Event ID: `4625` (Failed logon)
 
@@ -113,15 +113,15 @@ https://portal.azure.com
 ---
 
 ### Architecture overview (before VM connection to LAW):
-  - At this stage, the VM is not yet connected to the Log Analytics Workspace
+  - At this stage, the VM is not yet connected to the Log Analytics Workspace.
   
   
 ![Architecture Before Connection](images/architecture-before.png)
 
 
----
-- In the Virtual Machine:
-  - Go to **Extensions and Applications** (no extensions installed yet)
+### Virtual Machine (Initial State):
+  - No monitoring or security extensions were installed yet.
+  - Navigate to **Extensions and Applications** to confirm the VM baseline state.
 
 ![VM Extensions Empty](images/vm-extensions-empty.png)
 
@@ -135,7 +135,7 @@ https://portal.azure.com
 ![Content Hub](images/content-hub.png)
 
 ---
-### 4️⃣ Configure connector:
+### 4️⃣ Configure Data Connector:
   - Windows Security Events via AMA
     - Open connector page
 
@@ -143,6 +143,7 @@ https://portal.azure.com
 
 ---
 ### 5️⃣ Create a **Data Collection Rule (DCR)** 
+  - Define and deploy a **Data Collection Rule (DCR)** to collect and forward security events to the Log Analytics Workspace
 
 ![DCR](images/dcr.png)
 
@@ -154,9 +155,9 @@ https://portal.azure.com
 
 ---
 
-- We can now query the Log Analytics Workspace using KQL
-  - Start by querying all Security Events:
-  - At this stage, no logs are present yet
+- The Log Analytics Workspace can now be queried using KQL.
+  - Start by querying all Security Events.
+  - At this stage, no logs are present.
 
 ![No Logs](images/no-logs.png)
 
@@ -164,7 +165,7 @@ https://portal.azure.com
 
 - Generate a failed login attempt via RDP (as performed in the previous step)
 
-- Re-run the query — the log should now appear:
+- Re-run the query — the corresponding event should now appear:
 
 ![No Logs](images/failed-login-log.png)
 
@@ -173,16 +174,21 @@ https://portal.azure.com
 
 ## Part 5. Log Enrichment and Finding Location Data
 
-- Observe the `SecurityEvent` logs in the Log Analytics Workspace
-  - By default, logs only contain the source IP address (no geographic information)
+- The `SecurityEvent` logs in the Log Analytics Workspace were analyzed.
+  - By default, logs only contain the source IP address, without any geographic context.
 
 
-- To enrich the logs, import an open-source GeoIP dataset:
+### 1️⃣ Download GeoIP dataset
+- An open-source GeoIP dataset was used to enrich the logs:
   - File: `components/geoip-summarized.csv`
-  - This dataset maps IP ranges to geographic locations
+  - This dataset maps IP ranges to geographic locations.
 
 ---
+
+### 2️⃣ Create a new watchlist
+
 - In Microsoft Sentinel:
+
   - Go to **Configuration → Watchlist**
   - Create a new watchlist with the following settings:
     - **Name/Alias:** `geoip`
@@ -195,7 +201,7 @@ https://portal.azure.com
 
 ---
 
-- After running the query, logs now include geographic information:
+- After applying the enrichment, the logs now include geographic information:
 
 ![Geo IP Logs](images/geo-ip-logs.png)
 
@@ -210,6 +216,8 @@ https://portal.azure.com
   
 ## Part 6. Attack Map Creation
 
+### 1️⃣ Create new Workbook
+
 - In Microsoft Sentinel:
   - Create a new **Workbook**
 
@@ -219,7 +227,8 @@ https://portal.azure.com
 
 ---
 
-- Go to the **Advanced Editor** tab 
+- Navigate to the **Advanced Editor** tab:
+
   - Paste the JSON configuration file (`components/map.json`)
   - Click **Apply** and **Done Editing**
 
@@ -227,9 +236,7 @@ https://portal.azure.com
 
 ---
 
-- Save the workbook as:
-
-`Windows VM Attack Map`
+- Save the workbook with a descriptive name.
 
 ---
 
