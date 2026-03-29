@@ -32,9 +32,11 @@ https://portal.azure.com
 ---
 ### 2️⃣ Create a Virtual Network: `Vnet-soc-lab` 
   - IP range: `10.0.0.0/24`
+  
   ![Virtual Network IP range](images/vn-ip_range.png)
   
   - Overview of the Virtual Network configuration:
+  
   ![VN Creation](images/vn-creation.png)
 
 ---
