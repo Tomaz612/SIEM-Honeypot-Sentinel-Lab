@@ -29,26 +29,27 @@ https://portal.azure.com
 ## Part 2. Infrastructure Deployment (Azure Resources)
 
 ### 1️⃣ Create a Resource Group: `RG-SOC-Lab` 
-
+---
 ### 2️⃣ Create a Virtual Network: `Vnet-soc-lab` 
   - IP range: `10.0.0.0/24`
-  
   ![Virtual Network IP range](images/vn-ip_range.png)
+  
+  - Overview of the Virtual Network configuration:
   ![VN Creation](images/vn-creation.png)
 
-
+---
 ### 3️⃣ Deploy a Windows 10 Virtual Machine (Honeypot) 
+  - Overview of the Virtual Machine configuration:
+  ![VM Creation](images/vm-creation.png)
 
-![VM Creation](images/vm-creation.png)
 
-
-
+---
 ### 4️⃣ Network Security Group Configuration:
   - Create a rule that allows all traffic inbound
 
 ![NSG Rules](images/nsg-rules.png)
 
-
+---
 ### 5️⃣ In Windows 10 VM, Disable Windows Firewall:
   - Turn off Domain Profile
   - Turn off Private Profile
@@ -57,13 +58,13 @@ https://portal.azure.com
 ![Firewall Disabled](images/firewall-disabled.png)
 
 
-
+---
 ### Overview of all components (VM, Public IP, NSG, Network Interface):
 
 ![VM Overview](images/vm-overview.png)
 
-
-### Attempt to ping the public IP address to verify accessibility:
+---
+### Attempt to ping the VM's public IP address to verify network accessibility:
 
 ![Ping Test](images/ping-test.png)
 
@@ -102,10 +103,11 @@ https://portal.azure.com
 
 ### 1️⃣ Create a **Log Analytics Workspace (LAW)**
 
-![Log Analytics Workspace](images/law.png)
+  - Overview of the Log Analytics Workspace configuration:
+  ![Log Analytics Workspace](images/law.png)
 
 
-
+---
 ### 2️⃣ Deploy **Microsoft Sentinel** 
 
 ![Sentinel Setup](images/sentinel.png)
@@ -118,7 +120,7 @@ https://portal.azure.com
   
 ![Architecture Before Connection](images/architecture-before.png)
 
-
+---
 ### Virtual Machine (Initial State):
   - No monitoring or security extensions were installed yet.
   - Navigate to **Extensions and Applications** to confirm the VM baseline state.
@@ -177,7 +179,7 @@ https://portal.azure.com
 - The `SecurityEvent` logs in the Log Analytics Workspace were analyzed.
   - By default, logs only contain the source IP address, without any geographic context.
 
-
+---
 ### 1️⃣ Download GeoIP dataset
 - An open-source GeoIP dataset was used to enrich the logs:
   - File: `components/geoip-summarized.csv`
@@ -262,7 +264,7 @@ https://portal.azure.com
 
 ---
 
-- Attack Map visualization:
+### 🌍 Attack Map visualization:
 
   - Two attack attempts originating from Austria (malicious IP)  
   - One attempt from Portugal (local test activity)
@@ -271,14 +273,15 @@ https://portal.azure.com
 
 ---
 
-- Key observations:
+### 🔍 Key observations:
   - The exposed VM attracted real-world unauthorized access attempts 
   - Threat intelligence enrichment enabçe identification of malicious sources 
   - Geographic visualization provided clear insight into attack origins
 
 ---
 
-- This demonstrates:
+### 🧠 SIEM Impact
+
   - Real-time threat detection in a cloud environment 
   - Effective log collection and enrichment  
   - Practical use of SIEM for security monitoring and analysis
@@ -288,7 +291,7 @@ https://portal.azure.com
 
 - Additional attack activity was observed, including failed login attempts originating from the United States and Taiwan.
 
-- The attack map was refined to improve visualization:
+### 📊 Additional Attack Activity
 
   - Local activity (Portugal / internal testing) is highlighted in green 
   - A single failed login attempt is displayed in yellow
