@@ -291,14 +291,13 @@ https://portal.azure.com
   
 ---
 
-- Additional attack activity was observed, including failed login attempts originating from the United States and Taiwan.
-
 ### 📊 Additional Attack Activity
+  - Additional attack activity was observed over time, including failed login attempts originating from the United States and Taiwan.
+  - New color mapping was applied to the visualization:
+    - Local activity (Portugal / internal testing) is highlighted in green 
+    - A single failed login attempt is displayed in yellow
+    - Multiple failed login attempts from the same source are displayed in red
 
-  - Local activity (Portugal / internal testing) is highlighted in green 
-  - A single failed login attempt is displayed in yellow
-  - Multiple failed login attempts from the same source are displayed in red
-
-- This color logic provides a clearer representation of attack intensity and distinguishes between benign, low, and high-risk activity.
+  - This color logic improves the visibility of attack intensity and helps distinguish between benign, low, and high-risk activity.
 
 ![Updated Attack Map](images/attack-map-updated.png)
