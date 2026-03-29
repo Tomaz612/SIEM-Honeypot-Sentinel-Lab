@@ -28,45 +28,42 @@ https://portal.azure.com
 
 ## Part 2. Infrastructure Deployment (Azure Resources)
 
-### Create a Resource Group: `RG-SOC-Lab` 
----
+### 1️⃣ Create a Resource Group: `RG-SOC-Lab` 
 
-- Create a Virtual Network: `Vnet-soc-lab` 
+### 2️⃣ Create a Virtual Network: `Vnet-soc-lab` 
   - IP range: `10.0.0.0/24`
   
   ![Virtual Network IP range](images/vn-ip_range.png)
   ![VN Creation](images/vn-creation.png)
 
 
-### Deploy a Windows 10 Virtual Machine (Honeypot) 
+### 3️⃣ Deploy a Windows 10 Virtual Machine (Honeypot) 
 
 ![VM Creation](images/vm-creation.png)
 
 
----
 
-- Configure the Network Security Group:
+### 4️⃣ Network Security Group Configuration:
   - Create a rule that allows all traffic inbound
 
 ![NSG Rules](images/nsg-rules.png)
 
----
 
-- In Windows 10 VM, Disable Windows Firewall:
+### 5️⃣ In Windows 10 VM, Disable Windows Firewall:
   - Turn off Domain Profile
   - Turn off Private Profile
   - Turn off Public Profile
 
 ![Firewall Disabled](images/firewall-disabled.png)
 
----
 
-- Overview of all components (VM, Public IP, NSG, Network Interface):
+
+### Overview of all components (VM, Public IP, NSG, Network Interface):
 
 ![VM Overview](images/vm-overview.png)
 
----
-- Also try to ping the public IP address to verify accessibility:
+
+### Attempt to ping the public IP address to verify accessibility:
 
 ![Ping Test](images/ping-test.png)
 
