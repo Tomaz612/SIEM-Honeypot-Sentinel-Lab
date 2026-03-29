@@ -330,3 +330,45 @@ https://portal.azure.com
   - Diverse geographic origins of attack traffic.
 
 ![LAW Logs 4625](images/attack-logs2.png)
+
+
+---
+
+### 🚨 Brute Force Attempt Detected
+
+- Shortly after the final observations at the 24-hour mark, a significant spike in failed login attempts was identified.
+
+- Over 1000 failed login attempts (`Event ID 4625`) were generated from a single external IP address, indicating a brute-force attack against the exposed VM.
+
+- This behavior is consistent with automated attack tools performing credential guessing.
+
+![Brute Force Map](images/map_bruteforce.png)
+
+---
+
+- Corresponding logs in the Log Analytics Workspace show:
+
+  - A high volume of repeated authentication failures from a single IP (1,319 events)
+  - Continuous login attempts within a short period of time (21:19-21:54)
+  - Clear brute-force pattern targeting the RDP service (Event ID 4625)
+
+![Brute Force Logs](images/logs_brute_force.png)
+
+---
+
+### 🌐 Threat Intelligence Validation
+
+- The malicious IP identified in the attack activity was cross-referenced with threat intelligence sources.
+
+- The IP address has been reported **2,622 times** on platforms such as AbuseIPDB, with reports including:
+  - Honeypot hits
+  - Port scanning activity
+  - SSH login attempts on honeypots
+
+![AbuseIPDB Report](images/abuseipdb.png)
+
+---
+
+- This confirms that the observed activity in the lab corresponds to known malicious behavior associated with real-world attackers.
+
+- Integrating threat intelligence with SIEM logs improves detection accuracy and helps validate suspicious activity.
