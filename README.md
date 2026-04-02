@@ -370,4 +370,3 @@ https://portal.azure.com
 
 - This confirms that the observed activity in the lab corresponds to known malicious behavior associated with real-world attackers.
 
-- Integrating threat intelligence with SIEM logs improves detection accuracy and helps validate suspicious activity.
